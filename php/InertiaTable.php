@@ -163,12 +163,17 @@ class InertiaTable
      * @param string $label
      * @return self
      */
-    public function addColumn(string $key, string $label, bool $enabled = true): self
+
+    public function addColumn(string $key, string $label, bool $show = true): self
+
+
     {
         $this->columns->put($key, [
             'key'     => $key,
             'label'   => $label,
-            'enabled' => $enabled,
+            'enabled' => true,
+            'show' => $show
+
         ]);
 
         return $this;
