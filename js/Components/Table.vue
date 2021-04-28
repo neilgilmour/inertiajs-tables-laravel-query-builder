@@ -110,5 +110,11 @@ export default {
       },
     },
   },
+
+  mounted() {
+    Object.keys(this.queryBuilderData.columns).forEach((key) => {
+      this.changeColumnStatus(key, this.queryBuilderData.columns[key].show);
+    })
+  }
 };
 </script>
