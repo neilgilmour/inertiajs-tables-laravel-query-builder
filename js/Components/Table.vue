@@ -109,12 +109,45 @@ export default {
         }
       },
     },
+
+    columns: {
+      deep: true,
+      handler(newColumnSettings) {
+        let updatedColumnSettings = Object.assign(newColumnSettings);
+        Object.keys(newColumnSettings).forEach((column) => {
+          if (newColumnSettings.hasOwnProperty(column)) {
+            newColumnSettings[column].enabled
+              ? (updatedColumnSettings[column].show = true)
+              : (updatedColumnSettings[column].show = false);
+          }
+        });
+
+        localStorage.setItem(
+          "savedColumnDefaults",
+          JSON.stringify(updatedColumnSettings)
+        );
+      },
+    },
   },
 
   mounted() {
-    Object.keys(this.queryBuilderData.columns).forEach((key) => {
-      this.changeColumnStatus(key, this.queryBuilderData.columns[key].show);
-    })
-  }
+    if (
+      !localStorage.getItem("savedColumnDefaults") ||
+      localStorage.getItem("savedColumnDefaults") === "undefined"
+    ) {
+      Object.keys(this.queryBuilderData.columns).forEach((key) => {
+        this.changeColumnStatus(key, this.queryBuilderData.columns[key].show);
+      });
+    } else {
+      Object.keys(JSON.parse(localStorage.savedColumnDefaults)).forEach(
+        (key) => {
+          this.changeColumnStatus(
+            key,
+            JSON.parse(localStorage.savedColumnDefaults)[key].show
+          );
+        }
+      );
+    }
+  },
 };
 </script>
